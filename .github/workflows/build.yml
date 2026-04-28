@@ -2,41 +2,51 @@ name: Build DotMan
 
 on:
   push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+    branches: [main]
+  workflow_dispatch: # Cho phép chạy thủ công từ tab Actions
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  build-linux:
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          submodules: recursive # Hỗ trợ nếu có submodule
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 24 # Cập nhật lên Node 24 như GitHub yêu cầu
+          node-version: 20
           cache: 'npm'
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
-      - name: Build React and Electron
-        run: npm run build
+      - name: Build React frontend
+        run: npm run build:react
 
-      - name: Package Application
-        run: npx electron-builder --linux deb
+      - name: Build Electron main process
+        run: npm run build:electron
+
+      - name: Package .deb and AppImage
+        run: npx electron-builder --linux deb AppImage
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Upload Artifact
+      - name: List build output
+        run: ls -la dist-build/
+
+      - name: Upload DEB package
         uses: actions/upload-artifact@v4
         with:
-          name: dotman-deb-package
+          name: DotMan-deb
           path: dist-build/*.deb
+
+      - name: Upload AppImage
+        uses: actions/upload-artifact@v4
+        with:
+          name: DotMan-AppImage
+          path: dist-build/*.AppImage

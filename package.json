@@ -22,6 +22,7 @@
   "build": {
     "appId": "com.antigravity.dotman",
     "productName": "DotMan",
+    "asar": true,
     "directories": {
       "output": "dist-build"
     },
@@ -32,10 +33,13 @@
     ],
     "linux": {
       "target": [
-        "deb"
+        "deb",
+        "AppImage"
       ],
       "category": "Utility",
-      "icon": "assets/icon.png"
+      "icon": "assets/icon.png",
+      "synopsis": "Dotfile Manager for Hyprland",
+      "description": "A visual, centralized, and safe dotfile manager for Hyprland users."
     },
     "deb": {
       "priority": "optional",
