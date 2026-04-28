@@ -3,7 +3,7 @@ name: Build DotMan
 on:
   push:
     branches: [main]
-  workflow_dispatch: # Cho phép chạy thủ công từ tab Actions
+  workflow_dispatch:
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
@@ -22,31 +22,41 @@ jobs:
           node-version: 20
           cache: 'npm'
 
-      - name: Install dependencies
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y rpm libarchive-tools
+
+      - name: Install npm dependencies
         run: npm ci
 
       - name: Build React frontend
-        run: npm run build:react
+        run: npx tsc && npx vite build
 
       - name: Build Electron main process
-        run: npm run build:electron
+        run: npx tsc --project tsconfig.electron.json
 
-      - name: Package .deb and AppImage
+      - name: Package Linux builds
         run: npx electron-builder --linux deb AppImage
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: List build output
-        run: ls -la dist-build/
+        if: always()
+        run: ls -la dist-build/ || echo "No dist-build directory"
 
       - name: Upload DEB package
+        if: success()
         uses: actions/upload-artifact@v4
         with:
           name: DotMan-deb
           path: dist-build/*.deb
+          if-no-files-found: warn
 
       - name: Upload AppImage
+        if: success()
         uses: actions/upload-artifact@v4
         with:
           name: DotMan-AppImage
           path: dist-build/*.AppImage
+          if-no-files-found: warn
