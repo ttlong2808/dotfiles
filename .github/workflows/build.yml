@@ -5,12 +5,9 @@ on:
     branches: [main]
   workflow_dispatch:
 
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-
 jobs:
   build-linux:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
@@ -20,7 +17,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'npm'
 
       - name: Install system dependencies
         run: |
@@ -28,7 +24,7 @@ jobs:
           sudo apt-get install -y rpm libarchive-tools
 
       - name: Install npm dependencies
-        run: npm ci
+        run: npm install
 
       - name: Build React frontend
         run: npx tsc && npx vite build
@@ -43,9 +39,9 @@ jobs:
 
       - name: List build output
         if: always()
-        run: ls -la dist-build/ || echo "No dist-build directory"
+        run: ls -la dist-build/ || echo "No dist-build directory found"
 
-      - name: Upload DEB package
+      - name: Upload DEB
         if: success()
         uses: actions/upload-artifact@v4
         with:
