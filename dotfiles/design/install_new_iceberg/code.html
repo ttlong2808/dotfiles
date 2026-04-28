@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Install New Source - DotMan</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=Space+Grotesk:wght@500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed-variant": "#005049",
+                        "primary": "#b5fff4",
+                        "tertiary-fixed-dim": "#7bd0ff",
+                        "surface-variant": "#2d3449",
+                        "on-background": "#dae2fd",
+                        "inverse-surface": "#dae2fd",
+                        "on-primary": "#003732",
+                        "on-surface-variant": "#bdc9c6",
+                        "on-tertiary": "#00354a",
+                        "on-error": "#690005",
+                        "tertiary-fixed": "#c4e7ff",
+                        "background": "#0b1326",
+                        "on-tertiary-fixed-variant": "#004c69",
+                        "on-tertiary-fixed": "#001e2c",
+                        "surface-bright": "#31394d",
+                        "tertiary": "#e4f3ff",
+                        "outline-variant": "#3d4947",
+                        "primary-fixed-dim": "#72d7cb",
+                        "on-tertiary-container": "#006386",
+                        "on-secondary-fixed-variant": "#3c475a",
+                        "on-primary-fixed": "#00201d",
+                        "on-secondary-container": "#aeb9d0",
+                        "surface-dim": "#0b1326",
+                        "on-error-container": "#ffdad6",
+                        "surface-container": "#171f33",
+                        "inverse-on-surface": "#283044",
+                        "on-secondary": "#263143",
+                        "secondary-container": "#3e495d",
+                        "surface-container-highest": "#2d3449",
+                        "surface-container-high": "#222a3d",
+                        "outline": "#879391",
+                        "secondary": "#bcc7de",
+                        "primary-fixed": "#8ff4e7",
+                        "inverse-primary": "#006a62",
+                        "surface-container-lowest": "#060e20",
+                        "tertiary-container": "#a3dcff",
+                        "surface": "#0b1326",
+                        "on-primary-container": "#00675f",
+                        "secondary-fixed": "#d8e3fb",
+                        "error-container": "#93000a",
+                        "on-surface": "#dae2fd",
+                        "primary-container": "#81e6d9",
+                        "surface-container-low": "#131b2e",
+                        "error": "#ffb4ab",
+                        "on-secondary-fixed": "#111c2d",
+                        "secondary-fixed-dim": "#bcc7de",
+                        "surface-tint": "#72d7cb"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "gutter": "16px",
+                        "unit": "4px",
+                        "margin": "24px",
+                        "density": "compact"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["Space Grotesk"],
+                        "body-md": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "code-md": ["Space Grotesk"],
+                        "headline-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["11px", { "lineHeight": "1", "fontWeight": "700" }],
+                        "body-md": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "code-md": ["13px", { "lineHeight": "1.6", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "headline-md": ["24px", { "lineHeight": "1.3", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(23, 31, 51, 0.4);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(135, 147, 145, 0.2);
+        }
+        .glow-border:focus-within {
+            border-color: #b5fff4;
+            box-shadow: inset 0 0 8px rgba(181, 255, 244, 0.2);
+        }
+        .brutal-border {
+            border: 1px solid rgba(135, 147, 145, 0.3);
+        }
+        .terminal-bg {
+            background-color: #060e20;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen font-body-md text-body-md overflow-x-hidden selection:bg-primary selection:text-on-primary">
+<!-- TopAppBar -->
+<header class="flex justify-between items-center px-6 sticky top-0 w-full z-40 ml-64 h-12 border-b border-cyan-900/50 bg-slate-950/80 backdrop-blur-xl dark:bg-slate-950/80 font-mono text-[11px] uppercase text-cyan-400 dark:text-cyan-400 flat no shadows">
+<div class="flex items-center space-x-6">
+<nav class="flex space-x-6">
+<a class="text-slate-400 hover:text-cyan-300 cursor-pointer opacity-80 hover:opacity-100" href="#">Dashboard</a>
+<a class="text-slate-400 hover:text-cyan-300 cursor-pointer opacity-80 hover:opacity-100" href="#">Environment</a>
+<a class="text-slate-400 hover:text-cyan-300 cursor-pointer opacity-80 hover:opacity-100" href="#">Logs</a>
+</nav>
+</div>
+<div class="flex items-center space-x-4">
+<div class="flex space-x-4">
+<span class="material-symbols-outlined text-[16px] cursor-pointer opacity-80 hover:opacity-100 hover:text-cyan-300 transition-colors" data-icon="notifications">notifications</span>
+<span class="material-symbols-outlined text-[16px] cursor-pointer opacity-80 hover:opacity-100 hover:text-cyan-300 transition-colors" data-icon="cloud_upload">cloud_upload</span>
+<span class="material-symbols-outlined text-[16px] cursor-pointer opacity-80 hover:opacity-100 hover:text-cyan-300 transition-colors" data-icon="more_vert">more_vert</span>
+</div>
+<img alt="User profile" class="w-6 h-6 rounded-full border border-cyan-900/50 object-cover" data-alt="Close up portrait of a young person with neutral expression and moody lighting against a dark background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA0-DqhbgHPr0oK0mIHHi05jpCR_Hxd_YvBFSa8oo0bSv3bQswfuOnbO9YY8KRWWhVJ0eDRbr-HEJA73Zx6BE3eGI2CSh3-DNoIVcg6PTT8OHsEq_U1KMY7iDYG5W4IV_w0rJQZduIWqjuwhd9FIKbpj0etlqIEP2VP80rJOSOLeb2-c9lyeuseIb-L6OJPi7avtN5MUc2e7FVViAS2cfRDgn-zCEVne5nKe-cOn1rnsMIm3q6By0WqIeYihpZwhAh7zZ9zrBxzQPc"/>
+</div>
+</header>
+<!-- SideNavBar -->
+<nav class="fixed left-0 top-0 h-full flex flex-col w-64 h-screen border-r border-cyan-900/50 border-r border-cyan-900/30 bg-slate-950 dark:bg-slate-950 text-cyan-400 dark:text-cyan-400 font-mono text-xs uppercase tracking-widest flat no shadows z-50">
+<div class="p-6 border-b border-cyan-900/30 flex items-center space-x-3">
+<span class="material-symbols-outlined text-2xl text-cyan-400">terminal</span>
+<div>
+<div class="text-xl font-black tracking-tighter text-cyan-400 italic">DOTMAN</div>
+<div class="text-[9px] text-slate-500 mt-1">STATION-04 // ACTIVE</div>
+</div>
+</div>
+<div class="flex-1 py-4 flex flex-col gap-1">
+<a class="flex items-center space-x-3 text-slate-500 hover:text-cyan-200 px-4 py-3 transition-colors hover:bg-slate-900 transition-all duration-150 scale-95 active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="folder_open">folder_open</span>
+<span>Configurations</span>
+</a>
+<a class="flex items-center space-x-3 bg-cyan-400/10 text-cyan-400 border-l-2 border-cyan-400 px-4 py-3 hover:bg-slate-900 transition-all duration-150 scale-95 active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="database">database</span>
+<span>Repositories</span>
+</a>
+<a class="flex items-center space-x-3 text-slate-500 hover:text-cyan-200 px-4 py-3 transition-colors hover:bg-slate-900 transition-all duration-150 scale-95 active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="extension">extension</span>
+<span>Modules</span>
+</a>
+<a class="flex items-center space-x-3 text-slate-500 hover:text-cyan-200 px-4 py-3 transition-colors hover:bg-slate-900 transition-all duration-150 scale-95 active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="terminal">terminal</span>
+<span>Scripts</span>
+</a>
+<a class="flex items-center space-x-3 text-slate-500 hover:text-cyan-200 px-4 py-3 transition-colors hover:bg-slate-900 transition-all duration-150 scale-95 active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="history">history</span>
+<span>History</span>
+</a>
+</div>
+<div class="p-4">
+<button class="w-full bg-cyan-400/10 text-cyan-400 border border-cyan-400/50 py-2 hover:bg-cyan-400/20 transition-colors font-bold tracking-widest text-[10px]">SYNC ALL</button>
+</div>
+<div class="border-t border-cyan-900/30 p-4 flex flex-col gap-2">
+<a class="flex items-center space-x-3 text-slate-500 hover:text-cyan-200 text-[10px] transition-colors" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="menu_book">menu_book</span>
+<span>Docs</span>
+</a>
+<a class="flex items-center space-x-3 text-slate-500 hover:text-cyan-200 text-[10px] transition-colors" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="settings">settings</span>
+<span>System</span>
+</a>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="ml-64 p-margin pb-24">
+<header class="mb-8">
+<h1 class="font-headline-lg text-headline-lg text-on-surface mb-2">Install New Source</h1>
+<p class="text-on-surface-variant font-code-md text-code-md">Fetch and integrate dotfile packages from external repositories or local archives.</p>
+</header>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Left Column: Source Configuration -->
+<div class="lg:col-span-5 flex flex-col gap-gutter">
+<section class="glass-panel brutal-border rounded-lg overflow-hidden flex flex-col">
+<div class="border-b brutal-border px-4 py-2 bg-surface-container-high/50 flex items-center justify-between">
+<h2 class="font-label-sm text-label-sm text-primary uppercase tracking-widest">Source Configuration</h2>
+<span class="material-symbols-outlined text-sm text-outline">settings_ethernet</span>
+</div>
+<div class="p-6 flex flex-col gap-6">
+<!-- Source Type Selection -->
+<div class="flex flex-col gap-2">
+<label class="font-label-sm text-label-sm text-on-surface-variant uppercase">Source Type</label>
+<div class="grid grid-cols-3 gap-2">
+<button class="brutal-border py-2 px-3 flex items-center justify-center gap-2 bg-primary/10 border-primary text-primary transition-all">
+<span class="material-symbols-outlined text-sm">code</span>
+<span class="font-code-md text-code-md text-[11px]">Git</span>
+</button>
+<button class="brutal-border py-2 px-3 flex items-center justify-center gap-2 bg-surface-container hover:bg-surface-container-high text-on-surface transition-all">
+<span class="material-symbols-outlined text-sm">folder_zip</span>
+<span class="font-code-md text-code-md text-[11px]">Archive</span>
+</button>
+<button class="brutal-border py-2 px-3 flex items-center justify-center gap-2 bg-surface-container hover:bg-surface-container-high text-on-surface transition-all">
+<span class="material-symbols-outlined text-sm">hard_drive</span>
+<span class="font-code-md text-code-md text-[11px]">Local</span>
+</button>
+</div>
+</div>
+<!-- Repository URL -->
+<div class="flex flex-col gap-2 glow-border">
+<label class="font-label-sm text-label-sm text-on-surface-variant uppercase" for="repo-url">Repository URL</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-sm">link</span>
+<input class="w-full bg-surface-container-lowest border-0 border-b brutal-border text-on-surface font-code-md text-code-md py-2 pl-9 pr-3 focus:ring-0 focus:border-primary placeholder-outline-variant" id="repo-url" placeholder="https://github.com/user/repo.git" type="text" value="https://github.com/dotman-themes/iceberg-core.git"/>
+</div>
+</div>
+<!-- Branch / Tag -->
+<div class="flex flex-col gap-2 glow-border">
+<label class="font-label-sm text-label-sm text-on-surface-variant uppercase" for="branch-tag">Branch / Tag</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-sm">account_tree</span>
+<input class="w-full bg-surface-container-lowest border-0 border-b brutal-border text-on-surface font-code-md text-code-md py-2 pl-9 pr-3 focus:ring-0 focus:border-primary placeholder-outline-variant" id="branch-tag" placeholder="main" type="text" value="main"/>
+</div>
+</div>
+<!-- Target Directory -->
+<div class="flex flex-col gap-2 glow-border">
+<label class="font-label-sm text-label-sm text-on-surface-variant uppercase" for="target-dir">Install Path</label>
+<div class="relative flex items-center">
+<span class="text-outline-variant font-code-md text-code-md absolute left-3 select-none">~/.config/</span>
+<input class="w-full bg-surface-container-lowest border-0 border-b brutal-border text-on-surface font-code-md text-code-md py-2 pl-24 pr-3 focus:ring-0 focus:border-primary placeholder-outline-variant" id="target-dir" placeholder="package-name" type="text" value="iceberg"/>
+</div>
+</div>
+<div class="mt-2 pt-6 border-t brutal-border">
+<button class="w-full bg-surface-container border border-primary/50 text-primary py-3 px-4 font-code-md text-code-md flex items-center justify-center gap-2 hover:bg-primary/10 transition-colors brutal-border">
+<span class="material-symbols-outlined text-sm">sync</span>
+                                Fetch &amp; Preview Manifest
+                            </button>
+</div>
+</div>
+</section>
+<!-- Status Chip Example -->
+<div class="flex items-center gap-3 p-4 glass-panel brutal-border rounded-lg border-l-2 border-l-primary-fixed-dim">
+<span class="material-symbols-outlined text-primary-fixed-dim">info</span>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface uppercase">Ready to Fetch</span>
+<span class="font-code-md text-code-md text-[11px] text-on-surface-variant">Provide a valid Git URL to begin analysis.</span>
+</div>
+</div>
+</div>
+<!-- Right Column: File Manifest Preview -->
+<div class="lg:col-span-7 flex flex-col gap-gutter h-full">
+<section class="glass-panel brutal-border rounded-lg overflow-hidden flex flex-col h-full">
+<div class="border-b brutal-border px-4 py-2 bg-surface-container-high/50 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<h2 class="font-label-sm text-label-sm text-on-surface uppercase tracking-widest">Manifest Preview</h2>
+<span class="px-2 py-0.5 border border-primary/30 text-primary font-code-md text-[9px] rounded-DEFAULT">3 ITEMS PENDING</span>
+</div>
+<span class="material-symbols-outlined text-sm text-outline">list_alt</span>
+</div>
+<div class="flex-1 terminal-bg p-0 overflow-y-auto min-h-[400px]">
+<!-- Terminal Header -->
+<div class="bg-surface-container-lowest border-b brutal-border px-4 py-2 flex items-center gap-4 sticky top-0 z-10">
+<div class="w-1/2 font-label-sm text-label-sm text-on-surface-variant uppercase">Source Path</div>
+<div class="w-1/4 font-label-sm text-label-sm text-on-surface-variant uppercase text-center">Status</div>
+<div class="w-1/4 font-label-sm text-label-sm text-on-surface-variant uppercase text-right">Size</div>
+</div>
+<!-- Manifest Items -->
+<ul class="flex flex-col font-code-md text-code-md">
+<!-- Item 1: New -->
+<li class="flex items-center gap-4 px-4 py-3 border-b brutal-border hover:bg-white/5 transition-colors group">
+<div class="w-1/2 flex items-center gap-2 overflow-hidden">
+<span class="material-symbols-outlined text-sm text-secondary">description</span>
+<span class="text-on-surface truncate group-hover:text-primary transition-colors">alacritty/alacritty.yml</span>
+</div>
+<div class="w-1/4 flex justify-center">
+<span class="inline-flex items-center gap-1 border border-primary text-primary px-2 py-0.5 text-[10px] uppercase rounded-DEFAULT">
+<span class="material-symbols-outlined text-[12px]">add</span> New
+                                    </span>
+</div>
+<div class="w-1/4 text-right text-on-surface-variant text-[11px]">4.2 KB</div>
+</li>
+<!-- Item 2: Exists/Conflict -->
+<li class="flex items-center gap-4 px-4 py-3 border-b brutal-border hover:bg-white/5 transition-colors group bg-error/5">
+<div class="w-1/2 flex items-center gap-2 overflow-hidden">
+<span class="material-symbols-outlined text-sm text-secondary">description</span>
+<span class="text-on-surface truncate">tmux/.tmux.conf</span>
+</div>
+<div class="w-1/4 flex justify-center">
+<span class="inline-flex items-center gap-1 border border-error text-error px-2 py-0.5 text-[10px] uppercase rounded-DEFAULT">
+<span class="material-symbols-outlined text-[12px]">warning</span> Conflict
+                                    </span>
+</div>
+<div class="w-1/4 text-right text-on-surface-variant text-[11px]">1.8 KB</div>
+</li>
+<!-- Item 3: Update -->
+<li class="flex items-center gap-4 px-4 py-3 border-b brutal-border hover:bg-white/5 transition-colors group">
+<div class="w-1/2 flex items-center gap-2 overflow-hidden">
+<span class="material-symbols-outlined text-sm text-secondary">folder</span>
+<span class="text-on-surface truncate">nvim/lua/core/</span>
+</div>
+<div class="w-1/4 flex justify-center">
+<span class="inline-flex items-center gap-1 border border-tertiary-fixed-dim text-tertiary-fixed-dim px-2 py-0.5 text-[10px] uppercase rounded-DEFAULT">
+<span class="material-symbols-outlined text-[12px]">update</span> Update
+                                    </span>
+</div>
+<div class="w-1/4 text-right text-on-surface-variant text-[11px]">12 Items</div>
+</li>
+<!-- Blinking Cursor row -->
+<li class="px-4 py-3 text-primary animate-pulse">_</li>
+</ul>
+</div>
+<div class="p-4 border-t brutal-border bg-surface-container-low flex items-center justify-between">
+<div class="flex items-center gap-2 font-code-md text-[11px] text-on-surface-variant">
+<span class="material-symbols-outlined text-[14px]">terminal</span>
+<span>Awaiting deployment execution...</span>
+</div>
+<button class="bg-primary text-on-primary font-label-sm text-label-sm uppercase px-6 py-2.5 rounded-DEFAULT flex items-center gap-2 hover:bg-primary-fixed transition-colors shadow-[0_0_15px_rgba(181,255,244,0.3)]">
+<span class="material-symbols-outlined text-[16px]">play_arrow</span>
+                            Install Manifest Now
+                        </button>
+</div>
+</section>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="fixed bottom-0 right-0 left-64 flex justify-between items-center px-4 h-6 border-t border-cyan-800/40 border-t border-cyan-900/50 bg-cyan-950 dark:bg-cyan-950 text-cyan-500 dark:text-cyan-500 font-mono text-[9px] font-bold flat z-40">
+<div>SYSTEM STATUS: OPTIMAL // LATENCY 14MS</div>
+<div class="flex space-x-4">
+<a class="text-cyan-700 hover:text-cyan-300 transition-opacity duration-200" href="#">branch: main</a>
+<a class="text-cyan-700 hover:text-cyan-300 transition-opacity duration-200" href="#">utf-8</a>
+<a class="text-cyan-700 hover:text-cyan-300 transition-opacity duration-200" href="#">iceberg-theme</a>
+</div>
+</footer>
+</body></html>

@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>DotMan - Backup Manager</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=Space+Grotesk:wght@500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed-variant": "#005049",
+                        "primary": "#b5fff4",
+                        "tertiary-fixed-dim": "#7bd0ff",
+                        "surface-variant": "#2d3449",
+                        "on-background": "#dae2fd",
+                        "inverse-surface": "#dae2fd",
+                        "on-primary": "#003732",
+                        "on-surface-variant": "#bdc9c6",
+                        "on-tertiary": "#00354a",
+                        "on-error": "#690005",
+                        "tertiary-fixed": "#c4e7ff",
+                        "background": "#0b1326",
+                        "on-tertiary-fixed-variant": "#004c69",
+                        "on-tertiary-fixed": "#001e2c",
+                        "surface-bright": "#31394d",
+                        "tertiary": "#e4f3ff",
+                        "outline-variant": "#3d4947",
+                        "primary-fixed-dim": "#72d7cb",
+                        "on-tertiary-container": "#006386",
+                        "on-secondary-fixed-variant": "#3c475a",
+                        "on-primary-fixed": "#00201d",
+                        "on-secondary-container": "#aeb9d0",
+                        "surface-dim": "#0b1326",
+                        "on-error-container": "#ffdad6",
+                        "surface-container": "#171f33",
+                        "inverse-on-surface": "#283044",
+                        "on-secondary": "#263143",
+                        "secondary-container": "#3e495d",
+                        "surface-container-highest": "#2d3449",
+                        "surface-container-high": "#222a3d",
+                        "outline": "#879391",
+                        "secondary": "#bcc7de",
+                        "primary-fixed": "#8ff4e7",
+                        "inverse-primary": "#006a62",
+                        "surface-container-lowest": "#060e20",
+                        "tertiary-container": "#a3dcff",
+                        "surface": "#0b1326",
+                        "on-primary-container": "#00675f",
+                        "secondary-fixed": "#d8e3fb",
+                        "error-container": "#93000a",
+                        "on-surface": "#dae2fd",
+                        "primary-container": "#81e6d9",
+                        "surface-container-low": "#131b2e",
+                        "error": "#ffb4ab",
+                        "on-secondary-fixed": "#111c2d",
+                        "secondary-fixed-dim": "#bcc7de",
+                        "surface-tint": "#72d7cb"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "gutter": "16px",
+                        "unit": "4px",
+                        "margin": "24px",
+                        "density": "compact"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["Space Grotesk"],
+                        "body-md": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "code-md": ["Space Grotesk"],
+                        "headline-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["11px", { "lineHeight": "1", "fontWeight": "700" }],
+                        "body-md": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "code-md": ["13px", { "lineHeight": "1.6", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "headline-md": ["24px", { "lineHeight": "1.3", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: theme('colors.background'); color: theme('colors.on-background'); }
+    </style>
+</head>
+<body class="flex bg-background text-on-background min-h-screen">
+<!-- SideNavBar -->
+<nav class="fixed left-0 top-0 h-full flex flex-col w-64 h-screen border-r border-cyan-900/50 bg-slate-950 dark:bg-slate-950 text-cyan-400 dark:text-cyan-400 z-50">
+<div class="p-6 border-b border-cyan-900/30">
+<h1 class="text-xl font-black tracking-tighter text-cyan-400 italic">DOTMAN</h1>
+<p class="font-label-sm text-label-sm uppercase tracking-widest text-slate-500 mt-1">STATION-04 // ACTIVE</p>
+</div>
+<div class="flex-1 overflow-y-auto py-4">
+<ul class="space-y-1">
+<li>
+<a class="flex items-center gap-3 font-mono text-xs uppercase tracking-widest text-slate-500 hover:text-cyan-200 px-4 py-3 transition-colors hover:bg-slate-900 transition-all duration-150 scale-95 active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">folder_open</span>
+                        Configurations
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-3 font-mono text-xs uppercase tracking-widest bg-cyan-400/10 text-cyan-400 border-l-2 border-cyan-400 px-4 py-3 hover:bg-slate-900 transition-all duration-150 scale-95 active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">database</span>
+                        Repositories
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-3 font-mono text-xs uppercase tracking-widest text-slate-500 hover:text-cyan-200 px-4 py-3 transition-colors hover:bg-slate-900 transition-all duration-150 scale-95 active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">extension</span>
+                        Modules
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-3 font-mono text-xs uppercase tracking-widest text-slate-500 hover:text-cyan-200 px-4 py-3 transition-colors hover:bg-slate-900 transition-all duration-150 scale-95 active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">terminal</span>
+                        Scripts
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-3 font-mono text-xs uppercase tracking-widest text-slate-500 hover:text-cyan-200 px-4 py-3 transition-colors hover:bg-slate-900 transition-all duration-150 scale-95 active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">history</span>
+                        History
+                    </a>
+</li>
+</ul>
+</div>
+<div class="p-4 border-t border-cyan-900/30">
+<button class="w-full bg-primary text-on-primary font-label-sm text-label-sm uppercase tracking-widest py-3 px-4 rounded hover:bg-primary-container transition-colors scale-95 active:scale-90 transition-transform font-bold">SYNC ALL</button>
+<ul class="flex justify-between mt-6">
+<li>
+<a class="text-slate-500 hover:text-cyan-200 transition-colors" href="#" title="Docs">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">menu_book</span>
+</a>
+</li>
+<li>
+<a class="text-slate-500 hover:text-cyan-200 transition-colors" href="#" title="System">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">settings</span>
+</a>
+</li>
+</ul>
+</div>
+</nav>
+<!-- Main Content Area -->
+<div class="flex-1 ml-64 flex flex-col min-h-screen relative">
+<!-- TopAppBar -->
+<header class="flex justify-between items-center px-6 sticky top-0 w-full z-40 bg-slate-950/80 backdrop-blur-xl dark:bg-slate-950/80 text-cyan-400 dark:text-cyan-400 font-mono text-[11px] uppercase h-12 border-b border-cyan-900/50">
+<div class="flex items-center gap-6 hidden">
+<!-- Logo hidden by style_brand_logo -->
+</div>
+<nav class="flex gap-6 h-full items-center">
+<a class="text-slate-400 hover:text-cyan-300 cursor-pointer opacity-80 hover:opacity-100 h-full flex items-center border-b-2 border-transparent" href="#">Dashboard</a>
+<a class="text-cyan-400 border-b border-cyan-400 hover:text-cyan-300 cursor-pointer opacity-80 hover:opacity-100 h-full flex items-center" href="#">Environment</a>
+<a class="text-slate-400 hover:text-cyan-300 cursor-pointer opacity-80 hover:opacity-100 h-full flex items-center border-b-2 border-transparent" href="#">Logs</a>
+</nav>
+<div class="flex items-center gap-4">
+<div class="relative hidden md:flex">
+<span class="material-symbols-outlined absolute left-2 top-1/2 -translate-y-1/2 text-slate-500 text-[16px]">search</span>
+<input class="bg-surface-container border border-cyan-900/50 rounded-none py-1 pl-8 pr-2 text-[11px] text-cyan-400 placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-0 w-48" placeholder="SEARCH..." type="text"/>
+</div>
+<div class="flex gap-3">
+<button class="text-cyan-400 hover:text-cyan-300 cursor-pointer opacity-80 hover:opacity-100 transition-colors"><span class="material-symbols-outlined text-[18px]">notifications</span></button>
+<button class="text-cyan-400 hover:text-cyan-300 cursor-pointer opacity-80 hover:opacity-100 transition-colors"><span class="material-symbols-outlined text-[18px]">cloud_upload</span></button>
+<button class="text-cyan-400 hover:text-cyan-300 cursor-pointer opacity-80 hover:opacity-100 transition-colors"><span class="material-symbols-outlined text-[18px]">more_vert</span></button>
+</div>
+<div class="h-6 w-6 rounded-none bg-cyan-900/50 border border-cyan-400 overflow-hidden">
+<img alt="User profile" class="w-full h-full object-cover grayscale opacity-80" data-alt="Black and white portrait of a person with technical lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuClQ8mSyULeTjskgDHEFQEbgJ1fQfWvj1LbYURgWwym7n8VtZCXfSwsapuo0BtEwxzv0yCCwQh5c6_FPPnylw-PsNXviTe58zqm4YbUQZNYjX4xe4Jh5pBJThGSkykEVXj0aMGo0iIYNmk8icdB_eWVvxZcwn2Sqhk27cE3_Mr7F64PHWPUKZZdgk4H3DVLAtft1J9ulr-_GdBaJs-YnVfkRY5Xvhca2d38y3ERzQbACtVrUJ6A7ZspwbaCeV71sFVcTKtoFxSbV34"/>
+</div>
+</div>
+</header>
+<!-- Canvas -->
+<main class="flex-1 p-margin overflow-y-auto mb-10">
+<div class="max-w-6xl mx-auto space-y-gutter">
+<!-- Page Header -->
+<div class="flex justify-between items-end border-b border-cyan-900/50 pb-4">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-primary tracking-tighter">BACKUP MANAGER</h2>
+<p class="font-code-md text-code-md text-slate-400 mt-2 uppercase tracking-widest">System Snapshots &amp; Archival</p>
+</div>
+<button class="bg-primary text-on-primary px-6 py-2 font-label-sm text-label-sm uppercase hover:bg-primary-container transition-colors flex items-center gap-2 border border-primary">
+<span class="material-symbols-outlined text-[16px]">add</span>
+                        Create Backup
+                    </button>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-12 gap-gutter">
+<!-- Stats Card 1 -->
+<div class="col-span-12 md:col-span-4 bg-surface-container/40 backdrop-blur-md border border-cyan-900/50 p-4 relative overflow-hidden group">
+<div class="absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-transparent z-0 pointer-events-none"></div>
+<div class="relative z-10">
+<h3 class="font-label-sm text-label-sm text-slate-400 uppercase tracking-widest mb-1 border-b border-cyan-900/30 pb-2">Total Backups</h3>
+<div class="mt-4 flex items-baseline gap-2">
+<span class="font-headline-lg text-headline-lg text-primary">42</span>
+<span class="font-code-md text-code-md text-slate-500">snapshots</span>
+</div>
+</div>
+</div>
+<!-- Stats Card 2 -->
+<div class="col-span-12 md:col-span-4 bg-surface-container/40 backdrop-blur-md border border-cyan-900/50 p-4 relative overflow-hidden">
+<div class="relative z-10">
+<h3 class="font-label-sm text-label-sm text-slate-400 uppercase tracking-widest mb-1 border-b border-cyan-900/30 pb-2">Storage Used</h3>
+<div class="mt-4 flex items-baseline gap-2">
+<span class="font-headline-lg text-headline-lg text-primary">128.4</span>
+<span class="font-code-md text-code-md text-slate-500">GB</span>
+</div>
+<div class="mt-2 h-1 bg-surface w-full">
+<div class="h-full bg-primary w-[45%]"></div>
+</div>
+</div>
+</div>
+<!-- Stats Card 3 -->
+<div class="col-span-12 md:col-span-4 bg-surface-container/40 backdrop-blur-md border border-cyan-900/50 p-4 relative overflow-hidden">
+<div class="relative z-10">
+<h3 class="font-label-sm text-label-sm text-slate-400 uppercase tracking-widest mb-1 border-b border-cyan-900/30 pb-2">Next Scheduled</h3>
+<div class="mt-4">
+<span class="font-code-md text-code-md text-primary block">04:00 AM UTC</span>
+<span class="font-label-sm text-label-sm text-slate-500 mt-1 block">TGT: ALL_REPOS</span>
+</div>
+</div>
+</div>
+<!-- Backup List -->
+<div class="col-span-12 bg-surface-container/40 backdrop-blur-md border border-cyan-900/50 mt-4">
+<div class="p-4 border-b border-cyan-900/50 flex justify-between items-center bg-surface-container/60">
+<h3 class="font-label-sm text-label-sm text-primary uppercase tracking-widest">Recent Snapshots</h3>
+<div class="flex gap-2">
+<button class="p-1 border border-cyan-900/50 text-slate-400 hover:text-cyan-300 hover:border-cyan-400 transition-colors"><span class="material-symbols-outlined text-[14px]">filter_list</span></button>
+<button class="p-1 border border-cyan-900/50 text-slate-400 hover:text-cyan-300 hover:border-cyan-400 transition-colors"><span class="material-symbols-outlined text-[14px]">refresh</span></button>
+</div>
+</div>
+<div class="flex flex-col">
+<!-- Table Header -->
+<div class="grid grid-cols-12 gap-4 p-3 border-b border-cyan-900/30 bg-surface-container-highest/20 font-label-sm text-label-sm text-slate-500 uppercase">
+<div class="col-span-3">Snapshot ID</div>
+<div class="col-span-3">Target Set</div>
+<div class="col-span-3">Timestamp</div>
+<div class="col-span-2 text-right">Size</div>
+<div class="col-span-1 text-center"></div>
+</div>
+<!-- Row 1 (Expanded) -->
+<div class="border-b border-cyan-900/30 bg-[#ffffff] bg-opacity-[0.02]">
+<div class="grid grid-cols-12 gap-4 p-3 items-center hover:bg-[#ffffff] hover:bg-opacity-5 transition-colors cursor-pointer group">
+<div class="col-span-3 font-code-md text-code-md text-primary group-hover:text-primary-fixed-dim">SNAP-A8F2-99C</div>
+<div class="col-span-3 font-code-md text-code-md text-slate-300"><span class="border border-slate-700 px-1 text-[10px] text-slate-400 mr-2">ENV</span>prod-cluster-01</div>
+<div class="col-span-3 font-code-md text-code-md text-slate-400">2023-10-27 04:00:12</div>
+<div class="col-span-2 font-code-md text-code-md text-slate-400 text-right">4.2 GB</div>
+<div class="col-span-1 text-center text-primary">
+<span class="material-symbols-outlined text-[16px] transition-transform rotate-180">expand_more</span>
+</div>
+</div>
+<!-- Expanded Details -->
+<div class="p-4 bg-surface-container-lowest/80 border-t border-cyan-900/10 grid grid-cols-12 gap-4">
+<div class="col-span-8">
+<h4 class="font-label-sm text-label-sm text-slate-500 mb-2 border-b border-slate-800 pb-1">ARCHIVED FILES</h4>
+<ul class="font-code-md text-code-md text-slate-400 space-y-1 max-h-32 overflow-y-auto pr-2 custom-scrollbar">
+<li class="flex justify-between hover:text-slate-200"><span>/etc/nginx/nginx.conf</span> <span class="text-slate-600">12kb</span></li>
+<li class="flex justify-between hover:text-slate-200"><span>/var/log/syslog.1.gz</span> <span class="text-slate-600">4.1MB</span></li>
+<li class="flex justify-between hover:text-slate-200"><span>/home/dotman/.zshrc</span> <span class="text-slate-600">4kb</span></li>
+<li class="flex justify-between hover:text-slate-200"><span>/opt/scripts/deploy.sh</span> <span class="text-slate-600">1kb</span></li>
+<li class="flex justify-between hover:text-slate-200"><span>/var/db/dump_20231027.sql</span> <span class="text-slate-600">4.1GB</span></li>
+</ul>
+</div>
+<div class="col-span-4 flex flex-col justify-end gap-2 border-l border-cyan-900/30 pl-4">
+<button class="w-full bg-transparent border border-cyan-700 text-primary px-3 py-2 font-label-sm text-label-sm uppercase hover:bg-cyan-900/30 hover:border-cyan-400 transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[14px]">settings_backup_restore</span>
+                                            Restore
+                                        </button>
+<button class="w-full bg-transparent border border-slate-800 text-slate-400 px-3 py-2 font-label-sm text-label-sm uppercase hover:bg-slate-900 hover:border-error hover:text-error transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[14px]">delete</span>
+                                            Delete
+                                        </button>
+</div>
+</div>
+</div>
+<!-- Row 2 -->
+<div class="border-b border-cyan-900/30">
+<div class="grid grid-cols-12 gap-4 p-3 items-center hover:bg-[#ffffff] hover:bg-opacity-5 transition-colors cursor-pointer group">
+<div class="col-span-3 font-code-md text-code-md text-cyan-500 group-hover:text-primary-fixed-dim">SNAP-B4C1-22A</div>
+<div class="col-span-3 font-code-md text-code-md text-slate-300"><span class="border border-slate-700 px-1 text-[10px] text-slate-400 mr-2">CFG</span>global-settings</div>
+<div class="col-span-3 font-code-md text-code-md text-slate-400">2023-10-26 04:00:05</div>
+<div class="col-span-2 font-code-md text-code-md text-slate-400 text-right">12 MB</div>
+<div class="col-span-1 text-center text-slate-500">
+<span class="material-symbols-outlined text-[16px] transition-transform group-hover:text-primary">expand_more</span>
+</div>
+</div>
+</div>
+<!-- Row 3 -->
+<div class="border-b border-cyan-900/30">
+<div class="grid grid-cols-12 gap-4 p-3 items-center hover:bg-[#ffffff] hover:bg-opacity-5 transition-colors cursor-pointer group">
+<div class="col-span-3 font-code-md text-code-md text-cyan-500 group-hover:text-primary-fixed-dim">SNAP-X9D4-11F</div>
+<div class="col-span-3 font-code-md text-code-md text-slate-300"><span class="border border-slate-700 px-1 text-[10px] text-slate-400 mr-2">ALL</span>full-system-img</div>
+<div class="col-span-3 font-code-md text-code-md text-slate-400">2023-10-20 00:00:00</div>
+<div class="col-span-2 font-code-md text-code-md text-slate-400 text-right">45.8 GB</div>
+<div class="col-span-1 text-center text-slate-500">
+<span class="material-symbols-outlined text-[16px] transition-transform group-hover:text-primary">expand_more</span>
+</div>
+</div>
+</div>
+<!-- Row 4 -->
+<div class="border-b border-cyan-900/30">
+<div class="grid grid-cols-12 gap-4 p-3 items-center hover:bg-[#ffffff] hover:bg-opacity-5 transition-colors cursor-pointer group">
+<div class="col-span-3 font-code-md text-code-md text-error/80 group-hover:text-error line-through">SNAP-ERR1-00X</div>
+<div class="col-span-3 font-code-md text-code-md text-slate-500"><span class="border border-error/30 px-1 text-[10px] text-error/50 mr-2">FAIL</span>db-sync-job</div>
+<div class="col-span-3 font-code-md text-code-md text-slate-600">2023-10-19 14:22:10</div>
+<div class="col-span-2 font-code-md text-code-md text-slate-600 text-right">0 B</div>
+<div class="col-span-1 text-center text-slate-600">
+<span class="material-symbols-outlined text-[16px]">warning</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="fixed bottom-0 right-0 left-64 flex justify-between items-center px-4 h-6 border-t border-cyan-800/40 bg-cyan-950 dark:bg-cyan-950 text-cyan-500 dark:text-cyan-500 font-mono text-[9px] font-bold z-50">
+<div class="flex gap-4">
+<span class="text-white uppercase">SYSTEM STATUS: OPTIMAL // LATENCY 14MS</span>
+</div>
+<div class="flex gap-4">
+<a class="text-cyan-700 hover:text-cyan-300 transition-opacity duration-200" href="#">branch: main</a>
+<a class="text-cyan-700 hover:text-cyan-300 transition-opacity duration-200" href="#">utf-8</a>
+<a class="text-cyan-700 hover:text-cyan-300 transition-opacity duration-200" href="#">iceberg-theme</a>
+</div>
+</footer>
+</div>
+<style>
+        /* Custom scrollbar for the archived files list */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: theme('colors.cyan.900' / 50%);
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: theme('colors.cyan.700');
+        }
+    </style>
+</body></html>

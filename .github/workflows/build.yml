@@ -15,11 +15,13 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          submodules: recursive # Hỗ trợ nếu có submodule
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24 # Cập nhật lên Node 24 như GitHub yêu cầu
           cache: 'npm'
 
       - name: Install dependencies
@@ -29,7 +31,7 @@ jobs:
         run: npm run build
 
       - name: Package Application
-        run: npm run electron:build
+        run: npx electron-builder --linux deb
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
