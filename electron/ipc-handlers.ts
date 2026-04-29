@@ -149,8 +149,11 @@ export function registerIpcHandlers(): void {
         detached: true,
         stdio: 'ignore',
       });
+      child.on('error', (err: Error) => {
+        console.warn('[shell] Failed to start waybar:', err.message);
+      });
       child.unref();
-      return 'Waybar restarted';
+      return 'Waybar restarted (or skipped if not installed)';
     })
   );
 }
