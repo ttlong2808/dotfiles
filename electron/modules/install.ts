@@ -80,10 +80,10 @@ const APPROVED_DIRS = [
 
 // ── Helpers ──────────────────────────────────────────────────────────
 
-/** Check if a path is within an approved directory */
+/** Check if a path is within the user's home directory (safe zone) */
 function isApprovedPath(filePath: string): boolean {
   const resolved = path.resolve(filePath);
-  return APPROVED_DIRS.some((dir) => resolved.startsWith(dir));
+  return resolved.startsWith(os.homedir());
 }
 
 /** Run a shell command safely (execFile, not exec) and return stdout */
@@ -102,17 +102,18 @@ function runSafe(cmd: string, args: string[], cwd?: string): Promise<string> {
   });
 }
 
+/** Directories to always skip during file scanning */
+const SKIP_DIRS = new Set(['.git', '.github', '.vscode', 'node_modules', '.install', '__pycache__', 'assets']);
+
 /** Recursively list all files in a directory (returns absolute paths) */
 function walkDir(dir: string): string[] {
   const results: string[] = [];
-
   try {
     const entries = fs.readdirSync(dir, { withFileTypes: true });
     for (const entry of entries) {
       const fullPath = path.join(dir, entry.name);
       if (entry.isDirectory()) {
-        // Skip hidden dirs like .git
-        if (entry.name.startsWith('.')) continue;
+        if (SKIP_DIRS.has(entry.name)) continue;
         results.push(...walkDir(fullPath));
       } else if (entry.isFile()) {
         results.push(fullPath);
@@ -121,8 +122,29 @@ function walkDir(dir: string): string[] {
   } catch {
     // Permission denied or similar — skip
   }
-
   return results;
+}
+
+/**
+ * Detect if a repo uses GNU Stow structure.
+ * Stow repos have top-level dirs (e.g. hyprland/, kitty/) each containing
+ * .config/ or .local/ subdirectories that mirror the home directory.
+ */
+function detectStowStructure(stagedDir: string): boolean {
+  try {
+    const entries = fs.readdirSync(stagedDir, { withFileTypes: true });
+    const dirs = entries.filter(e => e.isDirectory() && !SKIP_DIRS.has(e.name) && !e.name.startsWith('.'));
+    if (dirs.length < 2) return false;
+    let stowCount = 0;
+    for (const dir of dirs) {
+      try {
+        const sub = fs.readdirSync(path.join(stagedDir, dir.name));
+        if (sub.includes('.config') || sub.includes('.local') || sub.includes('.cache')) stowCount++;
+      } catch { continue; }
+    }
+    console.log(`[install] Stow detection: ${stowCount}/${dirs.length} stow-like packages`);
+    return stowCount >= 2;
+  } catch { return false; }
 }
 
 /** Clean staging directory */
@@ -203,29 +225,37 @@ export async function generateManifest(
   stagedDir: string,
   targetBase: string = DEFAULT_TARGET
 ): Promise<ManifestPreviewEntry[]> {
+  const isStow = detectStowStructure(stagedDir);
+  const homeDir = os.homedir();
   const files = walkDir(stagedDir);
   const manifest: ManifestPreviewEntry[] = [];
 
+  console.log(`[install] Manifest: ${files.length} files, stow=${isStow}, target=${isStow ? homeDir : targetBase}`);
+
   for (const file of files) {
     const relativePath = path.relative(stagedDir, file);
-    const destination = path.join(targetBase, relativePath);
+    const parts = relativePath.split(path.sep);
+    let destination: string;
+
+    if (isStow && parts.length > 1) {
+      // Stow mode: strip package name → hyprland/.config/hypr/f → ~/.config/hypr/f
+      const pathWithinPkg = parts.slice(1).join(path.sep);
+      destination = path.join(homeDir, pathWithinPkg);
+    } else {
+      destination = path.join(targetBase, relativePath);
+    }
 
     let size = 0;
-    try {
-      size = fs.statSync(file).size;
-    } catch {
-      // Skip unreadable files
-    }
+    try { size = fs.statSync(file).size; } catch { /* skip */ }
 
     manifest.push({
       source_relative: relativePath,
       destination,
       conflict: fs.existsSync(destination),
       size,
-      selected: true, // Default: all selected
+      selected: true,
     });
   }
-
   return manifest;
 }
 

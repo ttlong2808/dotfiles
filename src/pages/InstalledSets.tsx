@@ -179,9 +179,26 @@ function SetCard({
   set: InstalledSet;
   onUninstall: () => void;
 }) {
+  const [backingUp, setBackingUp] = useState(false);
   const isActive = set.status === 'active';
   const iconName = STATUS_ICONS[set.status] || 'package_2';
   const installDate = new Date(set.install_date).toLocaleDateString('en-CA');
+
+  const handleBackup = async () => {
+    setBackingUp(true);
+    try {
+      const res = await window.dotman.backup.quickSave(set.id);
+      if (res.ok) {
+        alert(`✅ Backup created for "${set.name}"`);
+      } else {
+        alert(`Backup failed: ${res.error}`);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setBackingUp(false);
+    }
+  };
 
   return (
     <div
@@ -242,6 +259,16 @@ function SetCard({
             <>
               <button className="flex-1 bg-surface-highest hover:bg-surface-bright text-on-surface border border-outline-variant font-code text-[10px] font-bold py-1.5 rounded-sm transition-colors uppercase tracking-wider">
                 Configure
+              </button>
+              <button
+                onClick={handleBackup}
+                disabled={backingUp}
+                className="bg-surface-highest hover:bg-primary/20 hover:text-primary hover:border-primary/50 text-on-surface-variant border border-outline-variant w-8 flex justify-center items-center rounded-sm transition-colors disabled:opacity-50"
+                title="Backup"
+              >
+                <span className={`material-symbols-outlined text-[14px] ${backingUp ? 'animate-spin' : ''}`}>
+                  {backingUp ? 'sync' : 'backup'}
+                </span>
               </button>
               <button
                 onClick={onUninstall}

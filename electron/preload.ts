@@ -21,6 +21,7 @@ contextBridge.exposeInMainWorld('dotman', {
     restore: (backupPath: string, targetPath: string) => ipcRenderer.invoke('backup:restore', backupPath, targetPath),
     list: () => ipcRenderer.invoke('backup:list'),
     delete: (backupDir: string) => ipcRenderer.invoke('backup:delete', backupDir),
+    quickSave: (setId: string) => ipcRenderer.invoke('backup:quickSave', setId),
   },
 
   // Install
@@ -44,5 +45,11 @@ contextBridge.exposeInMainWorld('dotman', {
   shell: {
     reloadHyprland: () => ipcRenderer.invoke('shell:reloadHyprland'),
     reloadWaybar: () => ipcRenderer.invoke('shell:reloadWaybar'),
+  },
+
+  // Update
+  update: {
+    check: () => ipcRenderer.invoke('update:check'),
+    download: (url: string) => ipcRenderer.invoke('update:download', url),
   },
 });

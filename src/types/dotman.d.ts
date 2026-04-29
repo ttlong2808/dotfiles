@@ -56,6 +56,15 @@ export interface IpcResult<T = unknown> {
   error?: string;
 }
 
+export interface UpdateInfo {
+  available: boolean;
+  current_version: string;
+  latest_version: string;
+  download_url: string | null;
+  release_notes: string;
+  published_at: string;
+}
+
 export interface DotManAPI {
   registry: {
     load: () => Promise<IpcResult<RegistryData>>;
@@ -71,6 +80,7 @@ export interface DotManAPI {
     restore: (backupPath: string, targetPath: string) => Promise<IpcResult>;
     list: () => Promise<IpcResult>;
     delete: (backupDir: string) => Promise<IpcResult>;
+    quickSave: (setId: string) => Promise<IpcResult>;
   };
   install: {
     fetchManifest: (url: string, method: string, branch?: string, targetBase?: string) => Promise<IpcResult>;
@@ -86,6 +96,10 @@ export interface DotManAPI {
   shell: {
     reloadHyprland: () => Promise<IpcResult>;
     reloadWaybar: () => Promise<IpcResult>;
+  };
+  update: {
+    check: () => Promise<IpcResult<UpdateInfo>>;
+    download: (url: string) => Promise<IpcResult<string>>;
   };
 }
 

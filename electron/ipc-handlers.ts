@@ -32,6 +32,10 @@ import {
   groupByCategory,
   findConflicts,
 } from './modules/keybindings';
+import {
+  checkForUpdates,
+  downloadUpdate,
+} from './modules/updater';
 
 // ── Helper ─────────────────────────────────────────────────────────
 
@@ -172,5 +176,24 @@ export function registerIpcHandlers(): void {
         return 'Waybar restart failed — skipped';
       }
     })
+  );
+
+  // ── Quick Backup (backup current config for a set) ─────────────
+  ipcMain.handle('backup:quickSave', (_event, setId: string) =>
+    wrap(async () => {
+      const registry = await loadRegistry();
+      const set = registry.installed_sets.find(s => s.id === setId);
+      if (!set) throw new Error(`Set ${setId} not found in registry`);
+      const filePaths = set.manifest.map(m => m.path);
+      const session = await createBackup(set.name, filePaths);
+      return session;
+    })
+  );
+
+  // ── Update ─────────────────────────────────────────────────────
+  ipcMain.handle('update:check', () => wrap(() => checkForUpdates()));
+
+  ipcMain.handle('update:download', (_event, url: string) =>
+    wrap(() => downloadUpdate(url))
   );
 }
