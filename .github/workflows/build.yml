@@ -24,7 +24,7 @@ jobs:
       - name: Install system dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y rpm libarchive-tools
+          sudo apt-get install -y rpm libarchive-tools libfuse2
 
       - name: Install npm dependencies
         run: npm install
@@ -47,5 +47,17 @@ jobs:
           # Xóa bản release 'latest' cũ nếu có
           gh release delete latest --cleanup-tag -y || true
           
-          # Tạo bản release 'latest' mới và đính kèm file
-          gh release create latest dist-build/*.deb dist-build/*.AppImage --title "DotMan Latest Build" --notes "Bản build tự động từ nhánh main."
+          # Gom file hợp lệ để upload
+          FILES=""
+          for f in dist-build/*.deb dist-build/*.AppImage; do
+            if [ -f "$f" ]; then
+              FILES="$FILES $f"
+            fi
+          done
+          
+          if [ -n "$FILES" ]; then
+            gh release create latest $FILES --title "DotMan Latest Build" --notes "Bản build tự động từ nhánh main."
+          else
+            echo "Error: Không tìm thấy file cài đặt nào trong thư mục dist-build/"
+            exit 1
+          fi
