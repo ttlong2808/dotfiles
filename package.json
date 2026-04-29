@@ -17,10 +17,7 @@
     "dotfiles",
     "manager"
   ],
-  "author": {
-    "name": "DotMan Team",
-    "email": "ttlong2808@gmail.com"
-  },
+  "author": "DotMan Team",
   "license": "ISC",
   "build": {
     "appId": "com.antigravity.dotman",

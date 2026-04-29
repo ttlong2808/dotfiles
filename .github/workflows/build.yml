@@ -5,6 +5,9 @@ on:
     branches: [main]
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build-linux:
     runs-on: ubuntu-latest
@@ -37,22 +40,12 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: List build output
-        if: always()
-        run: ls -la dist-build/ || echo "No dist-build directory found"
-
-      - name: Upload DEB
-        if: success()
-        uses: actions/upload-artifact@v4
-        with:
-          name: DotMan-deb
-          path: dist-build/*.deb
-          if-no-files-found: warn
-
-      - name: Upload AppImage
-        if: success()
-        uses: actions/upload-artifact@v4
-        with:
-          name: DotMan-AppImage
-          path: dist-build/*.AppImage
-          if-no-files-found: warn
+      - name: Create Continuous Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Xóa bản release 'latest' cũ nếu có
+          gh release delete latest --cleanup-tag -y || true
+          
+          # Tạo bản release 'latest' mới và đính kèm file
+          gh release create latest dist-build/*.deb dist-build/*.AppImage --title "DotMan Latest Build" --notes "Bản build tự động từ nhánh main."
