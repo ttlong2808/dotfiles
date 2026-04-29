@@ -36,6 +36,7 @@
         "deb",
         "AppImage"
       ],
+      "maintainer": "DotMan Team <admin@dotman.local>",
       "category": "Utility",
       "icon": "assets/icon.png",
       "synopsis": "Dotfile Manager for Hyprland",
