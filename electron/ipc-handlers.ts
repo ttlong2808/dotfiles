@@ -190,6 +190,43 @@ export function registerIpcHandlers(): void {
     })
   );
 
+  // ── System-wide Backup ─────────────────────────────────────────
+  ipcMain.handle('backup:system', () =>
+    wrap(async () => {
+      const os = require('os');
+      const fs = require('fs');
+      const path = require('path');
+      const home = os.homedir();
+      const configDirs = [
+        path.join(home, '.config', 'hypr'),
+        path.join(home, '.config', 'waybar'),
+        path.join(home, '.config', 'kitty'),
+        path.join(home, '.config', 'rofi'),
+        path.join(home, '.config', 'swaync'),
+        path.join(home, '.config', 'swayosd'),
+        path.join(home, '.config', 'fastfetch'),
+        path.join(home, '.config', 'nvim'),
+      ];
+
+      // Collect all files from existing config directories
+      const allFiles: string[] = [];
+      const walkSync = (dir: string) => {
+        if (!fs.existsSync(dir)) return;
+        const entries = fs.readdirSync(dir, { withFileTypes: true });
+        for (const entry of entries) {
+          const full = path.join(dir, entry.name);
+          if (entry.isDirectory()) walkSync(full);
+          else if (entry.isFile()) allFiles.push(full);
+        }
+      };
+      for (const dir of configDirs) walkSync(dir);
+
+      if (allFiles.length === 0) throw new Error('No config files found to backup');
+      const session = await createBackup('system-snapshot', allFiles);
+      return { ...session, file_count: allFiles.length };
+    })
+  );
+
   // ── Update ─────────────────────────────────────────────────────
   ipcMain.handle('update:check', () => wrap(() => checkForUpdates()));
 

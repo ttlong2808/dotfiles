@@ -81,6 +81,7 @@ export interface DotManAPI {
     list: () => Promise<IpcResult>;
     delete: (backupDir: string) => Promise<IpcResult>;
     quickSave: (setId: string) => Promise<IpcResult>;
+    systemBackup: () => Promise<IpcResult>;
   };
   install: {
     fetchManifest: (url: string, method: string, branch?: string, targetBase?: string) => Promise<IpcResult>;

@@ -20,6 +20,7 @@ export default function InstalledSets({ onNavigate }: InstalledSetsProps) {
   const [sets, setSets] = useState<InstalledSet[]>([]);
   const [loading, setLoading] = useState(true);
   const [uninstallTarget, setUninstallTarget] = useState<InstalledSet | null>(null);
+  const [systemBackingUp, setSystemBackingUp] = useState(false);
 
   const loadRegistry = async () => {
     try {
@@ -61,6 +62,23 @@ export default function InstalledSets({ onNavigate }: InstalledSetsProps) {
     }
   };
 
+  const handleSystemBackup = async () => {
+    setSystemBackingUp(true);
+    try {
+      const res = await window.dotman.backup.systemBackup();
+      if (res.ok) {
+        alert('✅ System backup created successfully! All config files have been saved.');
+      } else {
+        alert(`System backup failed: ${res.error}`);
+      }
+    } catch (err) {
+      console.error(err);
+      alert('System backup failed unexpectedly.');
+    } finally {
+      setSystemBackingUp(false);
+    }
+  };
+
   const filtered = sets.filter((s) => {
     if (filter === 'active') return s.status === 'active';
     if (filter === 'inactive') return s.status === 'inactive';
@@ -86,13 +104,25 @@ export default function InstalledSets({ onNavigate }: InstalledSetsProps) {
             Manage active configuration sets and dependencies across environments.
           </p>
         </div>
-        <button
-          onClick={() => onNavigate('install')}
-          className="bg-primary text-on-primary hover:brightness-110 border border-primary font-code text-[11px] font-bold px-4 py-2.5 rounded-sm transition-all flex items-center gap-2 h-9 uppercase tracking-widest shrink-0"
-        >
-          <span className="material-symbols-outlined text-[16px]">add</span>
-          + Install New
-        </button>
+        <div className="flex items-center gap-2 shrink-0">
+          <button
+            onClick={handleSystemBackup}
+            disabled={systemBackingUp}
+            className="bg-surface-highest hover:bg-primary/20 hover:text-primary hover:border-primary/50 text-on-surface-variant border border-outline-variant font-code text-[11px] font-bold px-4 py-2.5 rounded-sm transition-all flex items-center gap-2 h-9 uppercase tracking-widest disabled:opacity-50"
+          >
+            <span className={`material-symbols-outlined text-[16px] ${systemBackingUp ? 'animate-spin' : ''}`}>
+              {systemBackingUp ? 'sync' : 'shield'}
+            </span>
+            {systemBackingUp ? 'Backing up...' : 'Backup System'}
+          </button>
+          <button
+            onClick={() => onNavigate('install')}
+            className="bg-primary text-on-primary hover:brightness-110 border border-primary font-code text-[11px] font-bold px-4 py-2.5 rounded-sm transition-all flex items-center gap-2 h-9 uppercase tracking-widest"
+          >
+            <span className="material-symbols-outlined text-[16px]">add</span>
+            + Install New
+          </button>
+        </div>
       </div>
 
       {/* Filter Bar */}

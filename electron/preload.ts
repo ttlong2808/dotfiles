@@ -22,6 +22,7 @@ contextBridge.exposeInMainWorld('dotman', {
     list: () => ipcRenderer.invoke('backup:list'),
     delete: (backupDir: string) => ipcRenderer.invoke('backup:delete', backupDir),
     quickSave: (setId: string) => ipcRenderer.invoke('backup:quickSave', setId),
+    systemBackup: () => ipcRenderer.invoke('backup:system'),
   },
 
   // Install
