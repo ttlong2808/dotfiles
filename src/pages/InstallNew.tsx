@@ -64,9 +64,9 @@ export default function InstallNew({ onNavigate }: { onNavigate: (p: Page) => vo
       };
       const res = await window.dotman.install.execute(config);
       if (res.ok) {
-        // Reload Waybar/Hyprland on success
-        window.dotman.shell.reloadHyprland();
-        window.dotman.shell.reloadWaybar();
+        // Reload Waybar/Hyprland on success (safe — won't crash if not installed)
+        try { await window.dotman.shell.reloadHyprland(); } catch { /* skip */ }
+        try { await window.dotman.shell.reloadWaybar(); } catch { /* skip */ }
         onNavigate('installed');
       } else {
         alert(`Install failed: ${res.error}`);

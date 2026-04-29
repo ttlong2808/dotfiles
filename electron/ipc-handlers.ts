@@ -130,30 +130,47 @@ export function registerIpcHandlers(): void {
   // ── Shell Commands ─────────────────────────────────────────────
   ipcMain.handle('shell:reloadHyprland', () =>
     wrap(async () => {
-      await runShellCommand('hyprctl', ['reload']);
-      return 'Hyprland reloaded';
+      try {
+        await runShellCommand('which', ['hyprctl']);
+        await runShellCommand('hyprctl', ['reload']);
+        return 'Hyprland reloaded';
+      } catch {
+        console.warn('[shell] hyprctl not found or failed — skipping Hyprland reload');
+        return 'Hyprland not available — skipped';
+      }
     })
   );
 
   ipcMain.handle('shell:reloadWaybar', () =>
     wrap(async () => {
-      // Kill existing waybar, then restart
+      try {
+        // Check if waybar exists first
+        await runShellCommand('which', ['waybar']);
+      } catch {
+        console.warn('[shell] waybar not found — skipping Waybar reload');
+        return 'Waybar not installed — skipped';
+      }
+
+      // Kill existing waybar (may not be running)
       try {
         await runShellCommand('killall', ['waybar']);
       } catch {
         // waybar might not be running — that's fine
       }
+
       // Start waybar in background (detached)
-      const { spawn } = require('child_process');
-      const child = spawn('waybar', [], {
-        detached: true,
-        stdio: 'ignore',
-      });
-      child.on('error', (err: Error) => {
-        console.warn('[shell] Failed to start waybar:', err.message);
-      });
-      child.unref();
-      return 'Waybar restarted (or skipped if not installed)';
+      try {
+        const { spawn } = require('child_process');
+        const child = spawn('waybar', [], {
+          detached: true,
+          stdio: 'ignore',
+        });
+        child.unref();
+        return 'Waybar restarted';
+      } catch (err) {
+        console.warn('[shell] Failed to start waybar:', err);
+        return 'Waybar restart failed — skipped';
+      }
     })
   );
 }

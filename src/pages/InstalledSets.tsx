@@ -47,9 +47,9 @@ export default function InstalledSets({ onNavigate }: InstalledSetsProps) {
         console.log('Uninstalled successfully', res.data);
         await loadRegistry();
         
-        // Reload Hyprland and Waybar
-        window.dotman.shell.reloadHyprland();
-        window.dotman.shell.reloadWaybar();
+        // Reload Hyprland and Waybar (safe — won't crash if not installed)
+        try { await window.dotman.shell.reloadHyprland(); } catch { /* skip */ }
+        try { await window.dotman.shell.reloadWaybar(); } catch { /* skip */ }
       } else {
         console.error('Failed to uninstall', res.error);
         alert(`Failed to uninstall: ${res.error}`);
