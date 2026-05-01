@@ -61,8 +61,10 @@ export interface UpdateInfo {
   current_version: string;
   latest_version: string;
   download_url: string | null;
+  asset_name: string;
   release_notes: string;
   published_at: string;
+  package_type: 'appimage' | 'deb';
 }
 
 export interface DependencyInfo {
@@ -118,7 +120,7 @@ export interface DotManAPI {
   };
   update: {
     check: () => Promise<IpcResult<UpdateInfo>>;
-    download: (url: string) => Promise<IpcResult<string>>;
+    download: (url: string, publishedAt: string) => Promise<IpcResult<string>>;
   };
 }
 

@@ -14,6 +14,7 @@ interface TopbarProps {
 export default function Topbar({ currentPage }: TopbarProps) {
   const [updateAvailable, setUpdateAvailable] = useState(false);
   const [updateUrl, setUpdateUrl] = useState<string | null>(null);
+  const [publishedAt, setPublishedAt] = useState('');
   const [downloading, setDownloading] = useState(false);
   const [updateMsg, setUpdateMsg] = useState('');
 
@@ -25,6 +26,7 @@ export default function Topbar({ currentPage }: TopbarProps) {
         if (res.ok && res.data?.available && res.data.download_url) {
           setUpdateAvailable(true);
           setUpdateUrl(res.data.download_url);
+          setPublishedAt(res.data.published_at);
         }
       } catch { /* silent */ }
     };
@@ -36,9 +38,9 @@ export default function Topbar({ currentPage }: TopbarProps) {
     setDownloading(true);
     setUpdateMsg('');
     try {
-      const res = await window.dotman.update.download(updateUrl);
+      const res = await window.dotman.update.download(updateUrl, publishedAt);
       if (res.ok && res.data) {
-        setUpdateMsg(`✅ Downloaded to ${res.data}. Run: sudo dpkg -i ${res.data}`);
+        setUpdateMsg(`✅ ${res.data}`);
         setUpdateAvailable(false);
       } else {
         setUpdateMsg(`❌ ${res.error}`);

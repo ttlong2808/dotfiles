@@ -240,7 +240,7 @@ export function registerIpcHandlers(): void {
   // ── Update ─────────────────────────────────────────────────────
   ipcMain.handle('update:check', () => wrap(() => checkForUpdates()));
 
-  ipcMain.handle('update:download', (_event, url: string) =>
-    wrap(() => downloadUpdate(url))
+  ipcMain.handle('update:download', (_event, url: string, publishedAt: string) =>
+    wrap(() => downloadUpdate(url, publishedAt))
   );
 }

@@ -52,6 +52,6 @@ contextBridge.exposeInMainWorld('dotman', {
   // Update
   update: {
     check: () => ipcRenderer.invoke('update:check'),
-    download: (url: string) => ipcRenderer.invoke('update:download', url),
+    download: (url: string, publishedAt: string) => ipcRenderer.invoke('update:download', url, publishedAt),
   },
 });
