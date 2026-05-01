@@ -57,7 +57,7 @@ const SCORE_CONFIG: Record<string, { icon: string; label: string; cls: string; b
 export default function InstallNew({ onNavigate }: { onNavigate: (p: Page) => void }) {
   const [sourceType, setSourceType] = useState<SourceType>('git');
   const [url, setUrl] = useState('');
-  const [branch, setBranch] = useState('main');
+  const [branch, setBranch] = useState('');
   const [installPath, setInstallPath] = useState('');
   const [name, setName] = useState('');
   const [preview, setPreview] = useState<ManifestPreviewEntry[] | null>(null);
@@ -68,6 +68,19 @@ export default function InstallNew({ onNavigate }: { onNavigate: (p: Page) => vo
 
   const handleFetch = async () => {
     if (!url) return;
+
+    // Validate URL: reject shell commands and non-URL inputs
+    if (sourceType === 'git' || sourceType === 'archive') {
+      const trimmed = url.trim();
+      if (trimmed.includes('$(') || trimmed.includes('`') || trimmed.startsWith('bash ') || trimmed.startsWith('curl ')) {
+        alert('Invalid URL: Please enter a direct Git URL (e.g. https://github.com/user/repo) — not a shell command.');
+        return;
+      }
+      if (sourceType === 'git' && !trimmed.match(/^(https?:\/\/|git@|ssh:\/\/)/) && !trimmed.endsWith('.git')) {
+        alert('Invalid Git URL. Expected format: https://github.com/user/repo or git@github.com:user/repo');
+        return;
+      }
+    }
     setIsFetching(true);
     setPreview(null);
     setCompat(null);
@@ -238,7 +251,8 @@ export default function InstallNew({ onNavigate }: { onNavigate: (p: Page) => vo
                       type="text"
                       value={branch}
                       onChange={(e) => setBranch(e.target.value)}
-                      className="w-full bg-surface-lowest border border-outline-variant rounded-sm py-2.5 pl-9 pr-3 font-code text-[13px] text-on-surface focus:border-primary/50 focus:outline-none transition-colors"
+                      placeholder="Default (auto-detect)"
+                      className="w-full bg-surface-lowest border border-outline-variant rounded-sm py-2.5 pl-9 pr-3 font-code text-[13px] text-on-surface placeholder:text-slate-600 focus:border-primary/50 focus:outline-none transition-colors"
                     />
                   </div>
                 </div>
