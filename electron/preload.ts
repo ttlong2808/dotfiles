@@ -30,6 +30,7 @@ contextBridge.exposeInMainWorld('dotman', {
     fetchManifest: (url: string, method: string, branch?: string, targetBase?: string) => ipcRenderer.invoke('install:fetchManifest', url, method, branch, targetBase),
     execute: (config: unknown) => ipcRenderer.invoke('install:execute', config),
     abort: (taskId: string) => ipcRenderer.invoke('install:abort', taskId),
+    checkCompatibility: (conflictCount: number) => ipcRenderer.invoke('install:checkCompatibility', conflictCount),
   },
 
   // Uninstall

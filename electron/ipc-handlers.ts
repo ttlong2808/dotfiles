@@ -26,6 +26,7 @@ import {
   executeInstall,
   type InstallConfig,
 } from './modules/install';
+import { checkCompatibility } from './modules/compatibility';
 import { executeUninstall } from './modules/uninstall';
 import {
   scanKeybindings,
@@ -114,6 +115,15 @@ export function registerIpcHandlers(): void {
 
   ipcMain.handle('install:execute', (_event, config: InstallConfig) =>
     wrap(() => executeInstall(config))
+  );
+
+  ipcMain.handle('install:checkCompatibility', (_event, conflictCount: number) =>
+    wrap(async () => {
+      const os = require('os');
+      const path = require('path');
+      const stagedDir = path.join(os.homedir(), '.cache', 'dotman', 'staging', 'repo');
+      return checkCompatibility(stagedDir, conflictCount);
+    })
   );
 
   // ── Uninstall ──────────────────────────────────────────────────

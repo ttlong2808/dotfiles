@@ -65,6 +65,23 @@ export interface UpdateInfo {
   published_at: string;
 }
 
+export interface DependencyInfo {
+  name: string;
+  installed: boolean;
+  required: boolean;
+  source_hint: string;
+}
+
+export interface CompatibilityReport {
+  dependencies: DependencyInfo[];
+  missing_count: number;
+  readme_found: boolean;
+  install_instructions: string;
+  conflict_count: number;
+  score: 'ready' | 'warnings' | 'missing_deps';
+  install_command: string;
+}
+
 export interface DotManAPI {
   registry: {
     load: () => Promise<IpcResult<RegistryData>>;
@@ -87,6 +104,7 @@ export interface DotManAPI {
     fetchManifest: (url: string, method: string, branch?: string, targetBase?: string) => Promise<IpcResult>;
     execute: (config: unknown) => Promise<IpcResult>;
     abort: (taskId: string) => Promise<IpcResult>;
+    checkCompatibility: (conflictCount: number) => Promise<IpcResult<CompatibilityReport>>;
   };
   uninstall: {
     execute: (setId: string) => Promise<IpcResult>;
