@@ -4,7 +4,10 @@
  */
 
 import { ipcMain } from 'electron';
-import { execFile } from 'child_process';
+import { execFile, spawn } from 'child_process';
+import os from 'os';
+import fs from 'fs';
+import path from 'path';
 import {
   loadRegistry,
   saveRegistry,
@@ -119,8 +122,6 @@ export function registerIpcHandlers(): void {
 
   ipcMain.handle('install:checkCompatibility', (_event, conflictCount: number) =>
     wrap(async () => {
-      const os = require('os');
-      const path = require('path');
       const stagedDir = path.join(os.homedir(), '.cache', 'dotman', 'staging', 'repo');
       return checkCompatibility(stagedDir, conflictCount);
     })
@@ -174,7 +175,6 @@ export function registerIpcHandlers(): void {
 
       // Start waybar in background (detached)
       try {
-        const { spawn } = require('child_process');
         const child = spawn('waybar', [], {
           detached: true,
           stdio: 'ignore',
@@ -203,9 +203,6 @@ export function registerIpcHandlers(): void {
   // ── System-wide Backup ─────────────────────────────────────────
   ipcMain.handle('backup:system', () =>
     wrap(async () => {
-      const os = require('os');
-      const fs = require('fs');
-      const path = require('path');
       const home = os.homedir();
       const configDirs = [
         path.join(home, '.config', 'hypr'),

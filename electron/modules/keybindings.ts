@@ -173,12 +173,23 @@ function scanFile(
 
   const bindings: Keybinding[] = [];
   const lines = content.split('\n');
+  let currentCategory = '';
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i].trim();
 
-    // Skip comments and empty lines
-    if (!line || line.startsWith('#')) continue;
+    // Parse category from comment: # [Category] Description
+    const categoryMatch = line.match(/^#\s*\[(.*?)\]/);
+    if (categoryMatch) {
+      currentCategory = categoryMatch[1].trim();
+      continue;
+    }
+
+    // Skip comments and empty lines (if not a category comment)
+    if (!line || line.startsWith('#')) {
+      if (!line) currentCategory = ''; // Reset category on empty line
+      continue;
+    }
 
     // Handle `source = path` includes
     const sourceMatch = line.match(/^source\s*=\s*(.+)$/i);
@@ -230,7 +241,7 @@ function scanFile(
       key: parsed.key,
       dispatcher: parsed.dispatcher,
       action: parsed.action,
-      category: categorize(parsed.dispatcher),
+      category: currentCategory || categorize(parsed.dispatcher),
       bind_type: bindType,
       source_file: resolved,
       line_number: i + 1,

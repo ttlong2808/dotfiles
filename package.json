@@ -4,7 +4,9 @@
   "description": "Dotfile Manager for Hyprland",
   "main": "dist-electron/main.js",
   "scripts": {
-    "dev": "vite",
+    "dev": "concurrently \"npm run dev:frontend\" \"wait-on http://127.0.0.1:5173 && npm run dev:electron\"",
+    "dev:frontend": "vite --host 0.0.0.0",
+    "dev:electron": "tsc --project tsconfig.electron.json && VITE_DEV_SERVER_URL=http://localhost:5173 electron .",
     "build:react": "tsc && vite build",
     "build:electron": "tsc --project tsconfig.electron.json",
     "build": "npm run build:react && npm run build:electron",
@@ -70,8 +72,10 @@
     "vite": "^6.0.0"
   },
   "dependencies": {
+    "concurrently": "^9.2.1",
     "lucide-react": "^0.500.0",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "wait-on": "^9.0.5"
   }
 }

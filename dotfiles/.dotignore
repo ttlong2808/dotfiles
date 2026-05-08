@@ -1,0 +1,5 @@
+# Files in these directories will NEVER be overwritten by the installer
+# if they already exist.
+hypr/custom/*
+*.log
+.DS_Store
